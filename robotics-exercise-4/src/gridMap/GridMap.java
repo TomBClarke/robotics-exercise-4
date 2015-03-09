@@ -2,6 +2,7 @@ package gridMap;
 
 import lejos.geom.Line;
 import lejos.geom.Point;
+import lejos.robotics.navigation.Pose;
 import rp.robotics.mapping.IGridMap;
 import rp.robotics.mapping.RPLineMap;
 
@@ -52,10 +53,14 @@ public class GridMap implements IGridMap {
 	public boolean isValidTransition(int _x1, int _y1, int _x2, int _y2) {
 		if(isObstructed(_x1, _y1) || isObstructed(_x2, _y2)){
 			return false;
-		} else if(Math.sqrt(Math.pow(_x1 - _x2, 2)+Math.pow( _y1 -_y2, 2))!=1) {
+		} else if(Math.sqrt(Math.pow(_x1 - _x2, 2) + Math.pow( _y1 -_y2, 2))!=1) {
+			return false;
+		} else if(!isValidGridPosition(_x1, _y1) || !isValidGridPosition(_x2, _y2)){
 			return false;
 		} else {
-			Line line1 = new Line(_x1, _y1, _x2, _y2);
+			Point pointA = getCoordinatesOfGridPosition(_x1, _y1);
+			Point pointB = getCoordinatesOfGridPosition(_x2, _y2);
+			Line line1 = new Line(pointA.x, pointA.y, pointB.x, pointB.y);
 			Line[] lines = lineMap.getLines();
 			for (Line line2 : lines) {
 				if(lineMap.intersectsAt(line1, line2) != null){
@@ -68,8 +73,7 @@ public class GridMap implements IGridMap {
 
 	@Override
 	public float rangeToObstacleFromGridPosition(int _x, int _y, float _heading) {
-		// TODO Auto-generated method stub
-		return 0;
+		return lineMap.range(new Pose(_x, _y, _heading));
 	}
 
 }
