@@ -6,6 +6,12 @@ import lejos.robotics.navigation.Pose;
 import rp.robotics.mapping.IGridMap;
 import rp.robotics.mapping.RPLineMap;
 
+/**
+ * An implementation of IGridMap
+ * 
+ * @author Thomas Clarke, Rowan Cole, Kyle Allen-Taylor
+ *
+ */
 public class GridMap implements IGridMap {
 	
 	private final int gridXSize;
@@ -15,6 +21,16 @@ public class GridMap implements IGridMap {
 	private final float cellSize;
 	private final RPLineMap lineMap;
 
+	/**
+	 * Creates a grid map implementation.
+	 * 
+	 * @param gridXSize The size of the grid in the x direction.
+	 * @param gridYSize The sie of the grid in the y direction.
+	 * @param xStart The offset to start counting x.
+	 * @param yStart The offset to start counting y.
+	 * @param cellSize The physical distance between 2 points.
+	 * @param lineMap The linemap.
+	 */
 	public GridMap(int gridXSize, int gridYSize, float xStart, float yStart, float cellSize, RPLineMap lineMap){
 		this.gridXSize = gridXSize;
 		this.gridYSize = gridYSize;
