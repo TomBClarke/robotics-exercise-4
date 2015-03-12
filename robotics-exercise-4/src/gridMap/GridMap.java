@@ -25,7 +25,7 @@ public class GridMap implements IGridMap {
 	 * Creates a grid map implementation.
 	 * 
 	 * @param gridXSize The size of the grid in the x direction.
-	 * @param gridYSize The sie of the grid in the y direction.
+	 * @param gridYSize The size of the grid in the y direction.
 	 * @param xStart The offset to start counting x.
 	 * @param yStart The offset to start counting y.
 	 * @param cellSize The physical distance between 2 points.
@@ -40,6 +40,18 @@ public class GridMap implements IGridMap {
 		this.lineMap = lineMap;
 	}
 
+	public float getXStart() {
+		return this.xStart;
+	}
+	
+	public float getYStart() {
+		return this.yStart;
+	}
+	
+	public float getCellSize() {
+		return this.cellSize;
+	}
+	
 	@Override
 	public int getXSize() {
 		return gridXSize;
