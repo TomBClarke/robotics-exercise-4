@@ -2,7 +2,6 @@ package robotMove;
 
 import java.util.LinkedList;
 
-import part1.LineFollower;
 import lejos.nxt.LightSensor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
@@ -42,7 +41,6 @@ public class GridFollower implements Behavior {
 
 	@Override
 	public void action() {
-		
 		//not sure if this fixes the issue, needs testing on the actual robot, with a proper distance used.
 		moving = true;
 		while(!suppressed){

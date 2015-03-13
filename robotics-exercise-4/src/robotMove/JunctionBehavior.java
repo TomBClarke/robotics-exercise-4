@@ -2,6 +2,7 @@ package robotMove;
 
 import java.util.LinkedList;
 
+import followPath.FollowPath;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Sound;
 import lejos.robotics.navigation.DifferentialPilot;

@@ -2,6 +2,7 @@ package robotMove;
 
 import java.util.LinkedList;
 
+import followPath.FollowPath;
 import part1.LineFollower;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
@@ -49,7 +50,7 @@ public class GridNavigator {
 			new Stopped(followpath, pathToTake),
 			new GridFollower(pilot, sensorL, sensorR, pathToTake, moving),
 			new JunctionBehavior(pilot, sensorL, sensorR, pathToTake, followpath), 
-			new BlockerDetector(sensorS, pathToTake, followpath, moving)
+			new BlockerDetector(sensorS, pathToTake, moving)
 			});
 		arby.start();
 	}
