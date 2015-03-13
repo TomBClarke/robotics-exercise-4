@@ -1,9 +1,9 @@
 package robotMove;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import followPath.FollowPath;
-import part1.LineFollower;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
@@ -36,7 +36,7 @@ public class GridNavigator {
 		UltrasonicSensor sensorS = new UltrasonicSensor(SensorPort.S1);
 		boolean moving = false;
 		
-		LinkedList<Integer> pathToTake = new LinkedList<Integer>();
+		ArrayList<Integer> pathToTake = new ArrayList<Integer>();
 		
 		Delay.msDelay(500);
 		

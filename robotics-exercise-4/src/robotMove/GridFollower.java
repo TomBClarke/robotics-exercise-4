@@ -1,6 +1,6 @@
 package robotMove;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import lejos.nxt.LightSensor;
 import lejos.robotics.navigation.DifferentialPilot;
@@ -16,7 +16,7 @@ public class GridFollower implements Behavior {
 
 	private boolean suppressed;
 	private final LineFollower lf;
-	private LinkedList<Integer> pathToTake;
+	private ArrayList<Integer> pathToTake;
 	private boolean moving;
 
 	/**
@@ -27,7 +27,7 @@ public class GridFollower implements Behavior {
 	 * @param sensorR The right light sensor.
 	 * @param moving Used to describe if the robot is moving.
 	 */
-	public GridFollower(DifferentialPilot pilot, LightSensor sensorL, LightSensor sensorR, LinkedList<Integer> pathToTake, boolean moving) {
+	public GridFollower(DifferentialPilot pilot, LightSensor sensorL, LightSensor sensorR, ArrayList<Integer> pathToTake, boolean moving) {
 		this.lf = new LineFollower(pilot, sensorL, sensorR);
 		suppressed = false;
 		this.pathToTake = pathToTake;

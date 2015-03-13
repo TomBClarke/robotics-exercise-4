@@ -2,9 +2,13 @@ package followPath;
 
 import java.util.ArrayList;
 
+import gridMap.GridMap;
 import ilist.IList;
 import robotMove.GridNavigator;
 import robotSearches.*;
+import rp.robotics.mapping.IGridMap;
+import rp.robotics.mapping.MapUtils;
+import rp.robotics.mapping.RPLineMap;
 import lejos.robotics.navigation.Pose;
 
 public class FollowPath {
@@ -19,8 +23,25 @@ public class FollowPath {
 	}
 	
 	public FollowPath(){
-		this.pose = new Pose(0, 0, 0);    //Need to find out how Pose is defined
-		findPath = new FindPath(lineMap);    //Need to create lineMap
+		
+		RPLineMap lineMap = MapUtils.create2015Map1();
+
+		// grid map dimensions for this line map
+		int xJunctions = 14;
+		int yJunctions = 8;
+		float junctionSeparation = 30;
+
+		// position of grid map 0,0
+		int xInset = 15;
+		int yInset = 15;
+
+		IGridMap gridMap = createGridMap(lineMap, xJunctions, yJunctions,
+				xInset, yInset, junctionSeparation);		
+		
+		
+		this.pose = new Pose(0, 0, 0);
+		//Need to find out how Pose is defined
+		findPath = new FindPath(gridMap);    //Need to create lineMap
 		targets = new ArrayList<Coordinate>();
 		targets.add(new Coordinate(0,0));
 		targets.add(new Coordinate(9,6));
@@ -28,7 +49,7 @@ public class FollowPath {
 	}
 	
 	public ArrayList<Integer> getPath(){
-		IList<Node<Coordinate>> nodePath = FindPath.getPath();
+		IList<Node<Coordinate>> nodePath = findPath.getPath(new Coordinate((int)pose.getX(), (int)pose.getY()), targets.get(0));
 		Node<Coordinate> previousLocation = nodePath.head();   //Would be easier if this modified nodePath to just the tail
 		nodePath = nodePath.tail();
 		ArrayList<Integer> movePath = new ArrayList<Integer>();
@@ -69,11 +90,44 @@ public class FollowPath {
 		return pose;
 	}
 	
+	public ArrayList<Coordinate> getTargets(){
+		return targets;
+	}
+	
 	public boolean isAtDestination(){
 		return pose.getX() == targets.get(0).x() && pose.getY() == targets.get(0).y();
 	}
 	
-	public void addObstacle(Coordinate point1, Coordinate point2){
-		
+	public void addObstacle(){
+		Coordinate a = new Coordinate((int)pose.getX(), (int)pose.getY());
+		pose.moveUpdate(1);
+		Coordinate b = new Coordinate((int)pose.getX(), (int)pose.getY());
+		pose.moveUpdate(-1);
+		findPath.addObstacle(a, b);
+	}
+	
+	/***
+	 * Create an instance of an object that implements IGridMap from a LineMap.
+	 * You don't need to use this method, but it's a useful way for me to
+	 * document the parameters you might need.
+	 * 
+	 * @param _lineMap
+	 *            The underlying line map
+	 * @param _gridXSize
+	 *            How many grid positions along the x axis
+	 * @param _gridYSize
+	 *            How many grid positions along the y axis
+	 * @param _xStart
+	 *            The x coordinate where grid position (0,0) starts
+	 * @param _yStart
+	 *            The y coordinate where grid position (0,0) starts
+	 * @param _cellSize
+	 *            The distance between grid positions
+	 * @return
+	 */
+	public static IGridMap createGridMap(RPLineMap _lineMap, int _gridXSize,
+			int _gridYSize, float _xStart, float _yStart, float _cellSize) {
+		return new GridMap(_gridXSize, _gridYSize, _xStart, _yStart,
+				_cellSize, _lineMap);
 	}
 }

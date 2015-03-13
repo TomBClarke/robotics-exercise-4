@@ -1,6 +1,6 @@
 package robotMove;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import followPath.FollowPath;
 import lejos.nxt.LightSensor;
@@ -21,7 +21,7 @@ public class JunctionBehavior implements Behavior {
 	private final DifferentialPilot pilot;
 	private final LightSensor sensorL;
 	private final LightSensor sensorR;
-	private LinkedList<Integer> pathToTake;
+	private ArrayList<Integer> pathToTake;
 	private FollowPath followpath;
 	
 	/**
@@ -32,7 +32,7 @@ public class JunctionBehavior implements Behavior {
 	 * @param sensorR The right light sensor.
 	 * @param followpath This holds information about the post of the robot.
 	 */
-	public JunctionBehavior(DifferentialPilot pilot, LightSensor sensorL, LightSensor sensorR, LinkedList<Integer> pathToTake, FollowPath followpath) {
+	public JunctionBehavior(DifferentialPilot pilot, LightSensor sensorL, LightSensor sensorR, ArrayList<Integer> pathToTake, FollowPath followpath) {
 		this.pilot= pilot;
 		this.sensorL = sensorL;
 		this.sensorR = sensorR;
