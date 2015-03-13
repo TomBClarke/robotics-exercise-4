@@ -14,7 +14,6 @@ import lejos.robotics.navigation.Pose;
 public class FollowPath {
 	
 	private FindPath findPath;
-	private GridNavigator robotMove;
 	private Pose pose;
 	private ArrayList<Coordinate> targets;
 	
@@ -45,7 +44,7 @@ public class FollowPath {
 		targets = new ArrayList<Coordinate>();
 		targets.add(new Coordinate(0,0));
 		targets.add(new Coordinate(9,6));
-		GridNavigator robotMove = new GridNavigator(this);
+		new GridNavigator(this);
 	}
 	
 	public ArrayList<Integer> getPath(){
