@@ -81,9 +81,11 @@ public class GridMap implements IGridMap {
 	public boolean isValidTransition(int _x1, int _y1, int _x2, int _y2) {
 		if(isObstructed(_x1, _y1) || isObstructed(_x2, _y2)){
 			return false;
-		} else if(Math.sqrt(Math.pow(_x1 - _x2, 2) + Math.pow( _y1 -_y2, 2))!=1) {
+		} 
+		double dist = Math.sqrt(Math.pow(_x1 - _x2, 2) + Math.pow( _y1 -_y2, 2));
+		if(dist != 1 && dist != 0) {
 			return false;
-		} else if(!isValidGridPosition(_x1, _y1) || !isValidGridPosition(_x2, _y2)){
+		} else if(!isValidGridPosition(_x1, _y1) || !isValidGridPosition(_x2, _y2)) {
 			return false;
 		} else {
 			Point pointA = getCoordinatesOfGridPosition(_x1, _y1);
@@ -91,7 +93,7 @@ public class GridMap implements IGridMap {
 			Line line1 = new Line(pointA.x, pointA.y, pointB.x, pointB.y);
 			Line[] lines = lineMap.getLines();
 			for (Line line2 : lines) {
-				if(lineMap.intersectsAt(line1, line2) != null){
+				if(line1.intersectsLine(line2)){
 					return false;
 				}
 			}
@@ -101,7 +103,14 @@ public class GridMap implements IGridMap {
 
 	@Override
 	public float rangeToObstacleFromGridPosition(int _x, int _y, float _heading) {
-		return lineMap.range(new Pose(_x, _y, _heading));
+		return lineMap.range(new Pose(convertX(_x), convertY(_y), _heading));
+	}
+	
+	public float convertX(float x) {
+		return xStart + x * cellSize;
 	}
 
+	public float convertY(float y) {
+		return yStart + y * cellSize;
+	}
 }
