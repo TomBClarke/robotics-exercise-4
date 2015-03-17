@@ -35,11 +35,12 @@ public class Stopped implements Behavior {
 
 	@Override
 	public void action() {
-		if(followpath.isAtDestination()){
+		if(followpath.isAtDestination()) {
 			System.out.println("Ready to go!");
 			Button.waitForAnyPress();
 			followpath.getTargets().remove(0);
 			pathToTake = followpath.getPath();
+			System.out.println("following path");
 		} else {
 			followpath.addObstacle();
 			pathToTake = followpath.getPath();

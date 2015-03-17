@@ -42,12 +42,13 @@ public class GridFollower implements Behavior {
 	@Override
 	public void action() {
 		//not sure if this fixes the issue, needs testing on the actual robot, with a proper distance used.
-		moving = true;
+		//moving = true;
+		
+		//moving = false;
 		while(!suppressed){
 			lf.checkLine();
 		}
 		suppressed = false;
-		moving = false;
 	}
 
 	@Override

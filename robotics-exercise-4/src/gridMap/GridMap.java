@@ -18,7 +18,7 @@ public class GridMap implements IGridMap {
 	private final int gridYSize;
 	private final float xStart;
 	private final float yStart;
-	private final float cellSize;
+	public final float cellSize;
 	private final RPLineMap lineMap;
 
 	/**
@@ -38,18 +38,6 @@ public class GridMap implements IGridMap {
 		this.yStart = yStart;
 		this.cellSize = cellSize;
 		this.lineMap = lineMap;
-	}
-
-	public float getXStart() {
-		return this.xStart;
-	}
-	
-	public float getYStart() {
-		return this.yStart;
-	}
-	
-	public float getCellSize() {
-		return this.cellSize;
 	}
 	
 	@Override
@@ -106,11 +94,11 @@ public class GridMap implements IGridMap {
 		return lineMap.range(new Pose(convertX(_x), convertY(_y), _heading));
 	}
 	
-	public float convertX(float x) {
+	private float convertX(float x) {
 		return xStart + x * cellSize;
 	}
 
-	public float convertY(float y) {
+	private float convertY(float y) {
 		return yStart + y * cellSize;
 	}
 }

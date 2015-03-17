@@ -26,7 +26,7 @@ public class BlockerDetector implements Behavior {
 
 	@Override
 	public boolean takeControl() {
-		return moving && (sensorS.getDistance() > 10);
+		return moving && (sensorS.getDistance() > 30);
 	}
 
 	@Override

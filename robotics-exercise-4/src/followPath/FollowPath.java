@@ -1,5 +1,6 @@
 package followPath;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 import gridMap.GridMap;
@@ -9,6 +10,7 @@ import robotSearches.*;
 import rp.robotics.mapping.IGridMap;
 import rp.robotics.mapping.MapUtils;
 import rp.robotics.mapping.RPLineMap;
+import lejos.nxt.comm.RConsole;
 import lejos.robotics.navigation.Pose;
 
 public class FollowPath {
@@ -18,10 +20,16 @@ public class FollowPath {
 	private ArrayList<Coordinate> targets;
 	
 	public static void main(String [] args){
+		
+		RConsole.openBluetooth(0);
+		PrintStream ps = RConsole.getPrintStream();
+		System.setOut(ps);
+		System.setErr(ps);
+		
 		new FollowPath();
 	}
 	
-	public FollowPath(){
+	public FollowPath(){	
 		
 		RPLineMap lineMap = MapUtils.create2015Map1();
 
@@ -37,21 +45,24 @@ public class FollowPath {
 		IGridMap gridMap = createGridMap(lineMap, xJunctions, yJunctions,
 				xInset, yInset, junctionSeparation);		
 		
-		
 		this.pose = new Pose(0, 0, 0);
 		//Need to find out how Pose is defined
 		findPath = new FindPath(gridMap);    //Need to create lineMap
+		
 		targets = new ArrayList<Coordinate>();
 		targets.add(new Coordinate(0,0));
 		targets.add(new Coordinate(9,6));
+		
 		new GridNavigator(this);
 	}
 	
 	public ArrayList<Integer> getPath(){
 		IList<Node<Coordinate>> nodePath = findPath.getPath(new Coordinate((int)pose.getX(), (int)pose.getY()), targets.get(0));
+		System.out.println("stage 2");
 		Node<Coordinate> previousLocation = nodePath.head();   //Would be easier if this modified nodePath to just the tail
 		nodePath = nodePath.tail();
 		ArrayList<Integer> movePath = new ArrayList<Integer>();
+		System.out.println("stage 3");
 		while(!nodePath.isEmpty()){
 			int initialX = previousLocation.contents().x();
 			int initialY = previousLocation.contents().y();
