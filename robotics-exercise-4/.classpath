@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.lejos.nxt.ldt.LEJOS_LIBRARY_CONTAINER/nxt"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rp14-exercise4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/robotics-exercise-4-search-integration"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rp-utils"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
