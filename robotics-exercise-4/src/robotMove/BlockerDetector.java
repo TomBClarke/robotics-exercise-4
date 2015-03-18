@@ -5,6 +5,13 @@ import java.util.ArrayList;
 import lejos.nxt.UltrasonicSensor;
 import lejos.robotics.subsumption.Behavior;
 
+/**
+ * Tries to detect when the robot is trying to drive down a path where there is a blockage.
+ * 
+ * 
+ * @author Thomas Clarke
+ *
+ */
 public class BlockerDetector implements Behavior {
 
 	private ArrayList<Integer> pathToTake;

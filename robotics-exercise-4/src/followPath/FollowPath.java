@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import gridMap.GridMap;
 import ilist.IList;
+import ilist.Nil;
 import robotMove.GridNavigator;
 import robotSearches.*;
 import rp.robotics.mapping.IGridMap;
@@ -13,6 +14,13 @@ import rp.robotics.mapping.RPLineMap;
 import lejos.nxt.comm.RConsole;
 import lejos.robotics.navigation.Pose;
 
+/**
+ * Makes the robot go to a set of cooridnates.
+ * 
+ * 
+ * @author Thomas Clarke, Rowan Cole and Kyle Allen-Taylor
+ *
+ */
 public class FollowPath {
 	
 	private FindPath findPath;
@@ -29,16 +37,17 @@ public class FollowPath {
 		new FollowPath();
 	}
 	
+	/**
+	 * Makes the robot travel to a set of coordinates.
+	 */
 	public FollowPath(){	
 		
 		RPLineMap lineMap = MapUtils.create2015Map1();
 
-		// grid map dimensions for this line map
 		int xJunctions = 14;
 		int yJunctions = 8;
 		float junctionSeparation = 30;
 
-		// position of grid map 0,0
 		int xInset = 15;
 		int yInset = 15;
 
@@ -46,64 +55,99 @@ public class FollowPath {
 				xInset, yInset, junctionSeparation);		
 		
 		this.pose = new Pose(0, 0, 0);
-		//Need to find out how Pose is defined
-		findPath = new FindPath(gridMap);    //Need to create lineMap
+		findPath = new FindPath(gridMap);
 		
 		targets = new ArrayList<Coordinate>();
-		targets.add(new Coordinate(0,0));
-		targets.add(new Coordinate(9,6));
+		targets.add(new Coordinate(0, 0));
+		targets.add(new Coordinate(6, 2));
+		targets.add(new Coordinate(9, 6));
 		
 		new GridNavigator(this);
 	}
 	
+	/**
+	 * Create a new set of instructions for the robot to follow.
+	 * 
+	 * @return The directioin it should turn at each junction until iit reaches its destination.
+	 */
 	public ArrayList<Integer> getPath(){
-		IList<Node<Coordinate>> nodePath = findPath.getPath(new Coordinate((int)pose.getX(), (int)pose.getY()), targets.get(0));
+		System.out.println("stage 1");
+		boolean ready = false;
+		IList<Node<Coordinate>> nodePath = new Nil<Node<Coordinate>>();
+		
+		while(!ready) {
+			nodePath = findPath.getPath(new Coordinate((int)pose.getX(), (int)pose.getY()), targets.get(0));
+			if (nodePath.isEmpty()) {
+				System.out.println("CANNOT REACH TARGET NODE: " + targets.get(0) + ", skipping...");
+			} else {
+				ready = true;
+			}
+		}
+		
 		System.out.println("stage 2");
 		Node<Coordinate> previousLocation = nodePath.head();   //Would be easier if this modified nodePath to just the tail
 		nodePath = nodePath.tail();
 		ArrayList<Integer> movePath = new ArrayList<Integer>();
+		
 		System.out.println("stage 3");
-		while(!nodePath.isEmpty()){
+		while(!nodePath.isEmpty()) {
 			int initialX = previousLocation.contents().x();
 			int initialY = previousLocation.contents().y();
 			Node<Coordinate> currentLocation = nodePath.head();
 			nodePath = nodePath.tail();
 			int x = currentLocation.contents().x();
 			int y = currentLocation.contents().y();
-			int changeX = x-initialX;
-			int changeY = y-initialY;
+			int changeX = x - initialX;
+			int changeY = y - initialY;
 			int heading;
 			if(changeX==1) {
 				heading = 90;
-			} else if(changeX==-1) {
+			} else if(changeX == -1) {
 				heading = -90;
-			} else if(changeY==1) {
+			} else if(changeY == 1) {
 				heading = 0;
 			} else {
 				heading = 180;
 			}
 			int headingChange = (int)(heading - pose.getHeading());
-			if(headingChange==-90){
+			if(headingChange == -90) {
 				movePath.add(0);
 			}
-			else if(headingChange==90){
+			else if(headingChange == 90) {
 				movePath.add(2);
 			}
 			else{
 				movePath.add(1);
 			}
 		}
+		
+		System.out.println("path to take = " + movePath);
 		return movePath;
 	}
 	
+	/**
+	 * Returns the pose of the robot.
+	 * 
+	 * @return The pose.
+	 */
 	public Pose getPose(){
 		return pose;
 	}
 	
+	/**
+	 * Returns the list of coordinates the robot is aiming to get to.
+	 * 
+	 * @return The list of target coordinates.
+	 */
 	public ArrayList<Coordinate> getTargets(){
 		return targets;
 	}
 	
+	/**
+	 * Checks against the pose to see if the robot is at its destination.
+	 * 
+	 * @return Whether the robot has reached its destination.
+	 */
 	public boolean isAtDestination(){
 		return pose.getX() == targets.get(0).x() && pose.getY() == targets.get(0).y();
 	}
@@ -118,8 +162,6 @@ public class FollowPath {
 	
 	/***
 	 * Create an instance of an object that implements IGridMap from a LineMap.
-	 * You don't need to use this method, but it's a useful way for me to
-	 * document the parameters you might need.
 	 * 
 	 * @param _lineMap
 	 *            The underlying line map
@@ -133,7 +175,7 @@ public class FollowPath {
 	 *            The y coordinate where grid position (0,0) starts
 	 * @param _cellSize
 	 *            The distance between grid positions
-	 * @return
+	 * @return The grid map.
 	 */
 	public static IGridMap createGridMap(RPLineMap _lineMap, int _gridXSize,
 			int _gridYSize, float _xStart, float _yStart, float _cellSize) {

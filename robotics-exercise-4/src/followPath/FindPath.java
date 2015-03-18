@@ -3,33 +3,39 @@ package followPath;
 import ilist.*;
 import robotSearches.*;
 import rp.robotics.mapping.IGridMap;
-import maybe.*;
 
+/**
+ * Provides functionality to generate the graph, control its nodes and perform searches.
+ * 
+ * 
+ * @author Thomas Clarke, Rowan Cole and Kyle Allen-Taylor
+ *
+ */
 public class FindPath {
 
 	private Graph<Coordinate> graph;
 
+	/**
+	 * This shall setup the grid map for the robot so a search can be computed.
+	 * 
+	 * @param gridMap
+	 */
 	public FindPath(IGridMap gridMap) {
 		graph = new Graph<Coordinate>();
-
-		// creates the nodes required for the search
-		// loops through all of the points in the array.
 		
 		for (int i = 0; i < gridMap.getXSize(); i++) {
 			for (int j = 0; j < gridMap.getYSize(); j++) {
-				// checks if it is a valid grid position and if the point is
-				// obstructed.
-				if (gridMap.isValidGridPosition(i, j)
-						&& !gridMap.isObstructed(i, j)) {
+				
+				if (gridMap.isValidGridPosition(i, j) && !gridMap.isObstructed(i, j)) {
 					Coordinate c = new Coordinate(i, j);
 					Node<Coordinate> node = graph.nodeWith(c);
-					// checks the 4 points around the current point to check if
-					// there is a valid transition
+
 					for (int k = i - 1; k < i + 2; k +=2) {
 						if (gridMap.isValidTransition(i, j, k, j)) {
 							node.addSuccessor(graph.nodeWith(new Coordinate(k, j)));
 						}
 					}
+					
 					for (int k = j - 1; k < j + 2; k +=2) {
 						if (gridMap.isValidTransition(i, j, i, k)) {
 							node.addSuccessor(graph.nodeWith(new Coordinate(i, k)));
@@ -39,6 +45,7 @@ public class FindPath {
 			}
 		}
 		
+		//Prints the map.
 		for (Node<Coordinate> node : graph.nodes()) {
 			System.out.print("(" + node.contents().x() + ","
 					+ node.contents().y() + "): ");
@@ -50,12 +57,23 @@ public class FindPath {
 		}
 	}
 
+	/**
+	 * Returns the list of coordinates the robot shall visit on its way to the destination.
+	 * 
+	 * @param origin Where the robot is starting from.
+	 * @param coordinate Where the robot wants to get to.
+	 * @return The list of coordinates it shall visit,
+	 */
 	public IList<Node<Coordinate>> getPath(Coordinate origin, Coordinate coordinate) {
-		Maybe<IList<Node<Coordinate>>> path = graph.findPathFrom(graph.nodeWith(origin), graph.nodeWith(coordinate));
-		System.out.println(path.fromMaybe());
-		return path.fromMaybe();
+		return graph.findPathFrom(graph.nodeWith(origin), graph.nodeWith(coordinate));
 	}
 
+	/**
+	 * Deletes a connection between two nodes.
+	 * 
+	 * @param a One node (should be the one the robot is at).
+	 * @param b The other node (should be the one the robot is looking at).
+	 */
 	public void addObstacle(Coordinate a, Coordinate b) {
 		Node<Coordinate> nodeA = graph.nodeWith(a);
 		Node<Coordinate> nodeB = graph.nodeWith(b);

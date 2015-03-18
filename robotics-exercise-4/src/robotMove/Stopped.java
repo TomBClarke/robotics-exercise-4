@@ -9,7 +9,7 @@ import lejos.robotics.subsumption.Behavior;
 /**
  * This class handles the robot when there is no moves for it to do.
  * 
- * @author Tom
+ * @author Thomas Clarke
  *
  */
 public class Stopped implements Behavior {
