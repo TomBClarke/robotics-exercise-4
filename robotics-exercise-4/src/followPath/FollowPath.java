@@ -79,6 +79,8 @@ public class FollowPath {
 			nodePath = findPath.getPath(new Coordinate((int)pose.getX(), (int)pose.getY()), targets.get(0));
 			if (nodePath.isEmpty()) {
 				System.out.println("CANNOT REACH TARGET NODE: " + targets.get(0) + ", skipping...");
+				targets.remove(0);
+				//Need to decide what happens if all targets have been met/not found.
 			} else {
 				ready = true;
 			}
