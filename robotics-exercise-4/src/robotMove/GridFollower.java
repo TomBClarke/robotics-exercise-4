@@ -27,11 +27,11 @@ public class GridFollower implements Behavior {
 	 * @param sensorR The right light sensor.
 	 * @param moving Used to describe if the robot is moving.
 	 */
-	public GridFollower(DifferentialPilot pilot, LightSensor sensorL, LightSensor sensorR, ArrayList<Integer> pathToTake, boolean moving) {
+	public GridFollower(DifferentialPilot pilot, LightSensor sensorL, LightSensor sensorR, ArrayList<Integer> pathToTake, boolean moving, boolean suppressed) {
 		this.lf = new LineFollower(pilot, sensorL, sensorR);
-		suppressed = false;
 		this.pathToTake = pathToTake;
 		this.moving = moving;
+		this.suppressed = suppressed;
 	}
 
 	@Override

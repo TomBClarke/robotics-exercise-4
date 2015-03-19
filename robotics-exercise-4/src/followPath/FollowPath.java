@@ -33,7 +33,6 @@ public class FollowPath {
 		PrintStream ps = RConsole.getPrintStream();
 		System.setOut(ps);
 		System.setErr(ps);
-		
 		new FollowPath();
 	}
 	
@@ -54,7 +53,7 @@ public class FollowPath {
 		IGridMap gridMap = createGridMap(lineMap, xJunctions, yJunctions,
 				xInset, yInset, junctionSeparation);		
 		
-		this.pose = new Pose(0, 0, 0);
+		this.pose = new Pose(0, 0, 90);
 		findPath = new FindPath(gridMap);
 		
 		targets = new ArrayList<Coordinate>();
@@ -71,7 +70,6 @@ public class FollowPath {
 	 * @return The directioin it should turn at each junction until iit reaches its destination.
 	 */
 	public ArrayList<Integer> getPath(){
-		System.out.println("stage 1");
 		boolean ready = false;
 		IList<Node<Coordinate>> nodePath = new Nil<Node<Coordinate>>();
 		
@@ -86,23 +84,24 @@ public class FollowPath {
 			}
 		}
 		
-		System.out.println("stage 2");
 		Node<Coordinate> previousLocation = nodePath.head();   //Would be easier if this modified nodePath to just the tail
 		nodePath = nodePath.tail();
 		ArrayList<Integer> movePath = new ArrayList<Integer>();
+		float actualHeading = pose.getHeading();
 		
-		System.out.println("stage 3");
 		while(!nodePath.isEmpty()) {
 			int initialX = previousLocation.contents().x();
 			int initialY = previousLocation.contents().y();
 			Node<Coordinate> currentLocation = nodePath.head();
 			nodePath = nodePath.tail();
+			
 			int x = currentLocation.contents().x();
 			int y = currentLocation.contents().y();
 			int changeX = x - initialX;
 			int changeY = y - initialY;
+			
 			int heading;
-			if(changeX==1) {
+			if(changeX == 1) {
 				heading = 90;
 			} else if(changeX == -1) {
 				heading = -90;
@@ -111,19 +110,22 @@ public class FollowPath {
 			} else {
 				heading = 180;
 			}
-			int headingChange = (int)(heading - pose.getHeading());
+			
+			int headingChange = (int)(heading - actualHeading);
+			
 			if(headingChange == -90) {
 				movePath.add(0);
-			}
-			else if(headingChange == 90) {
+			} else if(headingChange == 90) {
 				movePath.add(2);
-			}
-			else{
+			} else {
 				movePath.add(1);
 			}
+			
+			actualHeading += headingChange;
+			previousLocation = currentLocation;
 		}
 		
-		System.out.println("path to take = " + movePath);
+		System.out.println("directions to take = " + movePath);
 		return movePath;
 	}
 	

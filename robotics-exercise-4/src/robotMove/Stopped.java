@@ -16,6 +16,7 @@ public class Stopped implements Behavior {
 
 	private FollowPath followpath;
 	private ArrayList<Integer> pathToTake;
+	private boolean suppressed;
 	
 	/**
 	 * Creates the object.
@@ -23,9 +24,10 @@ public class Stopped implements Behavior {
 	 * @param followpath The class which holds the pose of the robot. 
 	 * @param pathToTake The moves the robot must perform.
 	 */
-	public Stopped(FollowPath followpath, ArrayList<Integer> pathToTake){
+	public Stopped(FollowPath followpath, ArrayList<Integer> pathToTake, boolean suppressed){
 		this.followpath = followpath;
 		this.pathToTake = pathToTake;
+		this.suppressed = suppressed;
 	}
 	
 	@Override
@@ -40,7 +42,7 @@ public class Stopped implements Behavior {
 			Button.waitForAnyPress();
 			followpath.getTargets().remove(0);
 			pathToTake = followpath.getPath();
-			System.out.println("following path");
+			suppressed = false;
 		} else {
 			followpath.addObstacle();
 			pathToTake = followpath.getPath();

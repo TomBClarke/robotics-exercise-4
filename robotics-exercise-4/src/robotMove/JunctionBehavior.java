@@ -6,7 +6,6 @@ import followPath.FollowPath;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Sound;
 import lejos.robotics.navigation.DifferentialPilot;
-import lejos.robotics.navigation.Pose;
 import lejos.robotics.subsumption.Behavior;
 import lejos.util.Delay;
 
@@ -53,15 +52,15 @@ public class JunctionBehavior implements Behavior {
 		pilot.travel(100);
 		Integer direction = pathToTake.get(0);
 		pathToTake.remove(0);
-		if(direction == 0){
+		if(direction == 0) {
 			pilot.rotate(90);
 			followpath.getPose().rotateUpdate(90);
-		}else if(direction == 2){
+		} else if(direction == 2) {
 			pilot.rotate(-90);
 			followpath.getPose().rotateUpdate(-90);
 		}
 		
-		if(pathToTake.isEmpty()){
+		if(pathToTake.isEmpty()) {
 			Sound.beep();
 			Delay.msDelay(500);
 		}

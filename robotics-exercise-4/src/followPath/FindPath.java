@@ -45,6 +45,7 @@ public class FindPath {
 			}
 		}
 		
+		/*
 		//Prints the map.
 		for (Node<Coordinate> node : graph.nodes()) {
 			System.out.print("(" + node.contents().x() + ","
@@ -55,6 +56,7 @@ public class FindPath {
 			}
 			System.out.println();
 		}
+		*/
 	}
 
 	/**
