@@ -55,7 +55,6 @@ public class GridNavigator {
 			new BlockerDetector(sensorS, pathToTake, moving)
 			});
 		
-		System.out.println("Starting arby");
 		arby.start();
 	}
 	

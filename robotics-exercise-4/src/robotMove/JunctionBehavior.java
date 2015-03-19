@@ -61,8 +61,9 @@ public class JunctionBehavior implements Behavior {
 		}
 		
 		if(pathToTake.isEmpty()) {
-			Sound.beep();
-			Delay.msDelay(500);
+			Sound.setVolume(Sound.VOL_MAX);
+			Sound.beepSequence();
+			Delay.msDelay(1000);
 		}
 	}
 

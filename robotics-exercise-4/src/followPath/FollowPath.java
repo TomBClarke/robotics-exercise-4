@@ -1,5 +1,6 @@
 package followPath;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
@@ -35,7 +36,11 @@ public class FollowPath {
 		System.setErr(ps);
 		*/
 		
-		new FollowPath();
+		try {
+			new FollowPath();
+		} catch (Exception e) {
+	        e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -55,13 +60,15 @@ public class FollowPath {
 		IGridMap gridMap = createGridMap(lineMap, xJunctions, yJunctions,
 				xInset, yInset, junctionSeparation);		
 		
-		this.pose = new Pose(0, 0, 90);
+		this.pose = new Pose(1, 1, 90);
 		findPath = new FindPath(gridMap);
 		
 		targets = new ArrayList<Coordinate>();
-		targets.add(new Coordinate(0, 0));
+		targets.add(new Coordinate(1, 1));
 		targets.add(new Coordinate(6, 2));
-		targets.add(new Coordinate(9, 6));
+		targets.add(new Coordinate(10, 3));
+		targets.add(new Coordinate(6, 3));
+		targets.add(new Coordinate(0, 7));
 		
 		new GridNavigator(this);
 	}
@@ -74,6 +81,8 @@ public class FollowPath {
 	public ArrayList<Integer> getPath(){
 		boolean ready = false;
 		IList<Node<Coordinate>> nodePath = new Nil<Node<Coordinate>>();
+		
+		System.out.println("Target: (" + targets.get(0).x() + "," + targets.get(0).y()	+ ")");
 		
 		while(!ready) {
 			nodePath = findPath.getPath(new Coordinate((int)pose.getX(), (int)pose.getY()), targets.get(0));
