@@ -28,11 +28,13 @@ public class FollowPath {
 	private ArrayList<Coordinate> targets;
 	
 	public static void main(String [] args){
-		
+		/*
 		RConsole.openBluetooth(0);
 		PrintStream ps = RConsole.getPrintStream();
 		System.setOut(ps);
 		System.setErr(ps);
+		*/
+		
 		new FollowPath();
 	}
 	
@@ -84,6 +86,8 @@ public class FollowPath {
 			}
 		}
 		
+		nodePath = nodePath.tail();
+		
 		Node<Coordinate> previousLocation = nodePath.head();   //Would be easier if this modified nodePath to just the tail
 		nodePath = nodePath.tail();
 		ArrayList<Integer> movePath = new ArrayList<Integer>();
@@ -125,7 +129,9 @@ public class FollowPath {
 			previousLocation = currentLocation;
 		}
 		
-		System.out.println("directions to take = " + movePath);
+		movePath.add(1);
+		
+		//System.out.println("directions to take = " + movePath);
 		return movePath;
 	}
 	

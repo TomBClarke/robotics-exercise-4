@@ -57,6 +57,8 @@ public class FindPath {
 			System.out.println();
 		}
 		*/
+		
+		System.out.println("Map generated");
 	}
 
 	/**

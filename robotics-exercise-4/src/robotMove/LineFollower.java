@@ -77,9 +77,12 @@ public class LineFollower {
 		sL.setLow(sumLd / 5);
 		sR.setLow(sumRd / 5);
 		
+		/*
 		System.out.println("Light values: Left = " + (sumLl / 5) + " Right = " + (sumRl / 5));
 		System.out.println("Dark values: Left = " + (sumLd / 5) + " Right = " + (sumRd / 5));
-		System.out.println("Done! Press when ready to continue.");
+		*/
+		
+		System.out.println("Calibrated! Press when ready to continue.");
 		Button.waitForAnyPress();
 	}
 	
