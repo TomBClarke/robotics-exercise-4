@@ -33,7 +33,6 @@ public class GridNavigator {
 		LightSensor sensorR = new LightSensor(SensorPort.S3, true);
 		UltrasonicSensor sensorS = new UltrasonicSensor(SensorPort.S1);
 		
-		boolean moving = false;
 		boolean suppressed = false;
 		int speed = 100;
 		pilot.setTravelSpeed(speed);
@@ -50,9 +49,8 @@ public class GridNavigator {
 		
 		Arbitrator arby = new Arbitrator(new Behavior[] {
 			new Stopped(followpath, pathToTake, suppressed),
-			new GridFollower(pilot, sensorL, sensorR, pathToTake, moving, suppressed),
+			new GridFollower(pilot, sensorL, sensorR, pathToTake, sensorS, suppressed),
 			new JunctionBehavior(pilot, sensorL, sensorR, pathToTake, followpath), 
-			new BlockerDetector(sensorS, pathToTake, moving)
 			});
 		
 		arby.start();

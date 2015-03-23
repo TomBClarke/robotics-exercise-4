@@ -3,6 +3,7 @@ package robotMove;
 import java.util.ArrayList;
 
 import lejos.nxt.LightSensor;
+import lejos.nxt.UltrasonicSensor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
@@ -17,7 +18,7 @@ public class GridFollower implements Behavior {
 	private boolean suppressed;
 	private final LineFollower lf;
 	private ArrayList<Integer> pathToTake;
-	private boolean moving;
+	private UltrasonicSensor sensorS;
 
 	/**
 	 * Allows the class access to the sensors and pilot.
@@ -27,10 +28,10 @@ public class GridFollower implements Behavior {
 	 * @param sensorR The right light sensor.
 	 * @param moving Used to describe if the robot is moving.
 	 */
-	public GridFollower(DifferentialPilot pilot, LightSensor sensorL, LightSensor sensorR, ArrayList<Integer> pathToTake, boolean moving, boolean suppressed) {
+	public GridFollower(DifferentialPilot pilot, LightSensor sensorL, LightSensor sensorR, ArrayList<Integer> pathToTake, UltrasonicSensor sensorS, boolean suppressed) {
 		this.lf = new LineFollower(pilot, sensorL, sensorR);
 		this.pathToTake = pathToTake;
-		this.moving = moving;
+		this.sensorS = sensorS;
 		this.suppressed = suppressed;
 	}
 
@@ -41,13 +42,24 @@ public class GridFollower implements Behavior {
 
 	@Override
 	public void action() {
-		//not sure if this fixes the issue, needs testing on the actual robot, with a proper distance used.
-		//moving = true;
+		int readings = 0;
+		int repeats = 5;
 		
-		//moving = false;
+		for(int i = 0; i < repeats; i++) {
+			readings += sensorS.getDistance();
+		}
+		
+		readings = readings / repeats;
+		
+		if(readings < 30) {
+			suppressed = true;
+			pathToTake.clear();
+		}
+		
 		while(!suppressed){
 			lf.checkLine();
 		}
+		
 		suppressed = false;
 	}
 
