@@ -65,6 +65,8 @@ public class JunctionBehavior implements Behavior {
 			Sound.beepSequence();
 			Delay.msDelay(1000);
 		}
+
+		System.out.println("POSE = " + followpath.getPose());
 	}
 
 	@Override

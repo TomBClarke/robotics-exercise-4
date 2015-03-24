@@ -28,7 +28,7 @@ public class FollowPath {
 	private Pose pose;
 	private ArrayList<Coordinate> targets;
 	
-	public static void main(String [] args){
+	public static void main(String [] args) {
 		/*
 		RConsole.openBluetooth(0);
 		PrintStream ps = RConsole.getPrintStream();
@@ -46,7 +46,7 @@ public class FollowPath {
 	/**
 	 * Makes the robot travel to a set of coordinates.
 	 */
-	public FollowPath(){	
+	public FollowPath() {	
 		
 		RPLineMap lineMap = MapUtils.create2015Map1();
 
@@ -60,11 +60,11 @@ public class FollowPath {
 		IGridMap gridMap = createGridMap(lineMap, xJunctions, yJunctions,
 				xInset, yInset, junctionSeparation);		
 		
-		this.pose = new Pose(1, 1, 90);
+		this.pose = new Pose(10, 1, -90);
 		findPath = new FindPath(gridMap);
 		
 		targets = new ArrayList<Coordinate>();
-		targets.add(new Coordinate(1, 1));
+		targets.add(new Coordinate(10, 1));
 		targets.add(new Coordinate(6, 2));
 		targets.add(new Coordinate(10, 3));
 		targets.add(new Coordinate(6, 3));
@@ -95,7 +95,9 @@ public class FollowPath {
 			}
 		}
 		
-		nodePath = nodePath.tail();
+		//from the first point we must do the following time we need to do the following
+		
+		
 		
 		Node<Coordinate> previousLocation = nodePath.head();   //Would be easier if this modified nodePath to just the tail
 		nodePath = nodePath.tail();
@@ -120,18 +122,24 @@ public class FollowPath {
 				heading = -90;
 			} else if(changeY == 1) {
 				heading = 0;
-			} else {
+			} else if(changeY == -1) {
 				heading = 180;
+			} else {
+				heading = (int) pose.getHeading();
+				actualHeading = pose.getHeading();
 			}
 			
 			int headingChange = (int)(heading - actualHeading);
 			
-			if(headingChange == -90) {
+			if(headingChange == 90) {
 				movePath.add(0);
-			} else if(headingChange == 90) {
+			} else if(headingChange == -90) {
 				movePath.add(2);
-			} else {
+			} else if(headingChange == 180) {
+				//WILL THIS WORK?!?!?!
 				movePath.add(1);
+			} else {
+				movePath.add(3);
 			}
 			
 			actualHeading += headingChange;
@@ -140,7 +148,6 @@ public class FollowPath {
 		
 		movePath.add(1);
 		
-		//System.out.println("directions to take = " + movePath);
 		return movePath;
 	}
 	

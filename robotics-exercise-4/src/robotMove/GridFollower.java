@@ -42,6 +42,7 @@ public class GridFollower implements Behavior {
 
 	@Override
 	public void action() {
+		/*
 		int readings = 0;
 		int repeats = 5;
 		
@@ -55,7 +56,7 @@ public class GridFollower implements Behavior {
 			suppressed = true;
 			pathToTake.clear();
 		}
-		
+		*/
 		while(!suppressed){
 			lf.checkLine();
 		}

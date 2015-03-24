@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import followPath.FollowPath;
 import lejos.nxt.Button;
+import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
 /**
@@ -17,6 +18,7 @@ public class Stopped implements Behavior {
 	private FollowPath followpath;
 	private ArrayList<Integer> pathToTake;
 	private boolean suppressed;
+	private final DifferentialPilot pilot;
 	
 	/**
 	 * Creates the object.
@@ -24,10 +26,11 @@ public class Stopped implements Behavior {
 	 * @param followpath The class which holds the pose of the robot. 
 	 * @param pathToTake The moves the robot must perform.
 	 */
-	public Stopped(FollowPath followpath, ArrayList<Integer> pathToTake, boolean suppressed){
+	public Stopped(FollowPath followpath, ArrayList<Integer> pathToTake, boolean suppressed, DifferentialPilot pilot) {
 		this.followpath = followpath;
 		this.pathToTake = pathToTake;
 		this.suppressed = suppressed;
+		this.pilot = pilot;
 	}
 	
 	@Override
@@ -42,11 +45,26 @@ public class Stopped implements Behavior {
 			Button.waitForAnyPress();
 			followpath.getTargets().remove(0);
 			pathToTake = followpath.getPath();
-			suppressed = false;
 		} else {
 			followpath.addObstacle();
 			pathToTake = followpath.getPath();
 		}
+		
+		Integer direction = pathToTake.get(0);
+		pathToTake.remove(0);
+		System.out.println("directio = " + direction);
+		if(direction == 0) {
+			pilot.rotate(90);
+			followpath.getPose().rotateUpdate(90);
+		} else if(direction == 2) {
+			pilot.rotate(-90);
+			followpath.getPose().rotateUpdate(-90);
+		} else if(direction == 3) {
+			pilot.rotate(180);
+			followpath.getPose().rotateUpdate(180);
+		}
+		
+		suppressed = false;
 	}
 
 	@Override
