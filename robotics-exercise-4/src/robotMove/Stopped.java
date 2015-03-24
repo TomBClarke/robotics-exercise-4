@@ -55,13 +55,13 @@ public class Stopped implements Behavior {
 		System.out.println("directio = " + direction);
 		if(direction == 0) {
 			pilot.rotate(90);
-			followpath.getPose().rotateUpdate(90);
+			followpath.getPose().rotateRight();
 		} else if(direction == 2) {
 			pilot.rotate(-90);
-			followpath.getPose().rotateUpdate(-90);
+			followpath.getPose().rotateLeft();
 		} else if(direction == 3) {
 			pilot.rotate(180);
-			followpath.getPose().rotateUpdate(180);
+			followpath.getPose().rotate180();
 		}
 		
 		suppressed = false;

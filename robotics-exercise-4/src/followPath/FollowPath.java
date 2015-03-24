@@ -12,8 +12,10 @@ import robotSearches.*;
 import rp.robotics.mapping.IGridMap;
 import rp.robotics.mapping.MapUtils;
 import rp.robotics.mapping.RPLineMap;
+import lejos.nxt.SensorPort;
+import lejos.nxt.UltrasonicSensor;
 import lejos.nxt.comm.RConsole;
-import lejos.robotics.navigation.Pose;
+import lejos.util.Delay;
 
 /**
  * Makes the robot go to a set of cooridnates.
@@ -25,22 +27,24 @@ import lejos.robotics.navigation.Pose;
 public class FollowPath {
 	
 	private FindPath findPath;
-	private Pose pose;
+	private RobotPose pose;
 	private ArrayList<Coordinate> targets;
 	
 	public static void main(String [] args) {
-		/*
+		
 		RConsole.openBluetooth(0);
 		PrintStream ps = RConsole.getPrintStream();
 		System.setOut(ps);
 		System.setErr(ps);
-		*/
 		
-		try {
-			new FollowPath();
-		} catch (Exception e) {
-	        e.printStackTrace();
-		}
+//		UltrasonicSensor sensor = new UltrasonicSensor(SensorPort.S1);
+//		while(true) {
+//			System.out.println(sensor.getDistance());
+//			Delay.msDelay(1000);
+//		}
+		
+		
+		new FollowPath();
 	}
 	
 	/**
@@ -60,7 +64,7 @@ public class FollowPath {
 		IGridMap gridMap = createGridMap(lineMap, xJunctions, yJunctions,
 				xInset, yInset, junctionSeparation);		
 		
-		this.pose = new Pose(10, 1, -90);
+		this.pose = new RobotPose(10, 1, RobotPose.NEG_X);
 		findPath = new FindPath(gridMap);
 		
 		targets = new ArrayList<Coordinate>();
@@ -82,9 +86,8 @@ public class FollowPath {
 		boolean ready = false;
 		IList<Node<Coordinate>> nodePath = new Nil<Node<Coordinate>>();
 		
-		System.out.println("Target: (" + targets.get(0).x() + "," + targets.get(0).y()	+ ")");
-		
 		while(!ready) {
+			System.out.println("Target: (" + targets.get(0).x() + "," + targets.get(0).y()	+ ")");
 			nodePath = findPath.getPath(new Coordinate((int)pose.getX(), (int)pose.getY()), targets.get(0));
 			if (nodePath.isEmpty()) {
 				System.out.println("CANNOT REACH TARGET NODE: " + targets.get(0) + ", skipping...");
@@ -98,11 +101,10 @@ public class FollowPath {
 		//from the first point we must do the following time we need to do the following
 		
 		
-		
 		Node<Coordinate> previousLocation = nodePath.head();   //Would be easier if this modified nodePath to just the tail
 		nodePath = nodePath.tail();
 		ArrayList<Integer> movePath = new ArrayList<Integer>();
-		float actualHeading = pose.getHeading();
+		int actualHeading = pose.getHeading();
 		
 		while(!nodePath.isEmpty()) {
 			int initialX = previousLocation.contents().x();
@@ -117,29 +119,25 @@ public class FollowPath {
 			
 			int heading;
 			if(changeX == 1) {
-				heading = 90;
+				heading = RobotPose.POS_X;
 			} else if(changeX == -1) {
-				heading = -90;
+				heading = RobotPose.NEG_X;
 			} else if(changeY == 1) {
-				heading = 0;
-			} else if(changeY == -1) {
-				heading = 180;
+				heading = RobotPose.POS_Y;
 			} else {
-				heading = (int) pose.getHeading();
-				actualHeading = pose.getHeading();
+				heading = RobotPose.NEG_Y;
 			}
 			
-			int headingChange = (int)(heading - actualHeading);
+			int headingChange = heading - actualHeading;
 			
-			if(headingChange == 90) {
-				movePath.add(0);
-			} else if(headingChange == -90) {
+			if(headingChange == 1 || headingChange == -3) {
 				movePath.add(2);
-			} else if(headingChange == 180) {
-				//WILL THIS WORK?!?!?!
-				movePath.add(1);
-			} else {
+			} else if(headingChange == 2 || headingChange == -2) {
 				movePath.add(3);
+			} else if(headingChange == 3 || headingChange == -1) {
+				movePath.add(0);
+			} else {
+				movePath.add(1);
 			}
 			
 			actualHeading += headingChange;
@@ -156,7 +154,7 @@ public class FollowPath {
 	 * 
 	 * @return The pose.
 	 */
-	public Pose getPose(){
+	public RobotPose getPose(){
 		return pose;
 	}
 	
@@ -180,9 +178,9 @@ public class FollowPath {
 	
 	public void addObstacle(){
 		Coordinate a = new Coordinate((int)pose.getX(), (int)pose.getY());
-		pose.moveUpdate(1);
+		pose.moveForward();
 		Coordinate b = new Coordinate((int)pose.getX(), (int)pose.getY());
-		pose.moveUpdate(-1);
+		pose.moveBackward();
 		findPath.addObstacle(a, b);
 	}
 	

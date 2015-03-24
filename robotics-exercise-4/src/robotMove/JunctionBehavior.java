@@ -47,17 +47,17 @@ public class JunctionBehavior implements Behavior {
 	@Override
 	public void action() {
 		
-		followpath.getPose().moveUpdate((float) 1.0);
+		followpath.getPose().moveForward();
 		
 		pilot.travel(100);
 		Integer direction = pathToTake.get(0);
 		pathToTake.remove(0);
 		if(direction == 0) {
 			pilot.rotate(90);
-			followpath.getPose().rotateUpdate(90);
+			followpath.getPose().rotateRight();
 		} else if(direction == 2) {
 			pilot.rotate(-90);
-			followpath.getPose().rotateUpdate(-90);
+			followpath.getPose().rotateLeft();
 		}
 		
 		if(pathToTake.isEmpty()) {

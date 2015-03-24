@@ -42,21 +42,20 @@ public class GridFollower implements Behavior {
 
 	@Override
 	public void action() {
-		/*
-		int readings = 0;
-		int repeats = 5;
+//		int readings = 0;
+//		int repeats = 5;
+//		
+//		for(int i = 0; i < repeats; i++) {
+//			readings += sensorS.getDistance();
+//		}
+//		
+//		readings = readings / repeats;
+//		
+//		if(readings < 32) {
+//			suppressed = true;
+//			pathToTake.clear();
+//		}
 		
-		for(int i = 0; i < repeats; i++) {
-			readings += sensorS.getDistance();
-		}
-		
-		readings = readings / repeats;
-		
-		if(readings < 30) {
-			suppressed = true;
-			pathToTake.clear();
-		}
-		*/
 		while(!suppressed){
 			lf.checkLine();
 		}

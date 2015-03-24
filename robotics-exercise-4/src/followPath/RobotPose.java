@@ -31,6 +31,20 @@ public class RobotPose {
 		}
 	}
 	
+	public void moveBackward() {
+		if(heading == POS_Y) {
+			y--;
+		} else if (heading == POS_X) {
+			x--;
+		} else if (heading == NEG_Y) {
+			y++;
+		} else if (heading == NEG_X) {
+			x++;
+		} else {
+			System.out.println("Error changing pose");
+		}
+	}
+	
 	public void rotateLeft() {
 		if(heading == POS_Y) {
 			heading = NEG_X;
@@ -81,7 +95,7 @@ public class RobotPose {
 		return y;
 	}
 	
-	public int heading() {
+	public int getHeading() {
 		return heading;
 	}
 	

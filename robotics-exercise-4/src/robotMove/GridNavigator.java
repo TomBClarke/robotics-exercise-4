@@ -46,21 +46,19 @@ public class GridNavigator {
 		
 		followpath.getTargets().remove(0);
 		pathToTake = followpath.getPath();
-		
+
 		Integer direction = pathToTake.get(0);
 		pathToTake.remove(0);
 		if(direction == 0) {
 			pilot.rotate(90);
-			followpath.getPose().rotateUpdate(90);
+			followpath.getPose().rotateRight();
 		} else if(direction == 2) {
 			pilot.rotate(-90);
-			followpath.getPose().rotateUpdate(-90);
+			followpath.getPose().rotateLeft();
 		} else if(direction == 3) {
 			pilot.rotate(180);
-			followpath.getPose().rotateUpdate(180);
+			followpath.getPose().rotate180();
 		}
-		
-		System.out.println(pathToTake);
 		
 		Arbitrator arby = new Arbitrator(new Behavior[] {
 			new Stopped(followpath, pathToTake, suppressed, pilot),
