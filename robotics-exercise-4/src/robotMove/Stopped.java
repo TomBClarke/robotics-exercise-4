@@ -17,7 +17,6 @@ public class Stopped implements Behavior {
 
 	private FollowPath followpath;
 	private ArrayList<Integer> pathToTake;
-	private boolean suppressed;
 	private final DifferentialPilot pilot;
 	
 	/**
@@ -26,10 +25,9 @@ public class Stopped implements Behavior {
 	 * @param followpath The class which holds the pose of the robot. 
 	 * @param pathToTake The moves the robot must perform.
 	 */
-	public Stopped(FollowPath followpath, ArrayList<Integer> pathToTake, boolean suppressed, DifferentialPilot pilot) {
+	public Stopped(FollowPath followpath, ArrayList<Integer> pathToTake, DifferentialPilot pilot) {
 		this.followpath = followpath;
 		this.pathToTake = pathToTake;
-		this.suppressed = suppressed;
 		this.pilot = pilot;
 	}
 	
@@ -40,19 +38,30 @@ public class Stopped implements Behavior {
 
 	@Override
 	public void action() {
+		ArrayList<Integer> tempPath = new ArrayList<Integer>();
 		if(followpath.isAtDestination()) {
 			System.out.println("Ready to go!");
 			Button.waitForAnyPress();
-			followpath.getTargets().remove(0);
-			pathToTake = followpath.getPath();
+			if(followpath.getTargets().isEmpty()) {
+				System.out.println("No more targets, bye!");
+				System.exit(0);
+			} else {
+				followpath.getTargets().remove(0);
+				tempPath = followpath.getPath();
+			}
 		} else {
 			followpath.addObstacle();
-			pathToTake = followpath.getPath();
+			tempPath = followpath.getPath();
 		}
+		
+		for(int i = 0; i < tempPath.size(); i++) {
+			pathToTake.add(tempPath.get(i));
+		}
+		
+		//System.out.println("pathToTake: " + pathToTake);
 		
 		Integer direction = pathToTake.get(0);
 		pathToTake.remove(0);
-		System.out.println("directio = " + direction);
 		if(direction == 0) {
 			pilot.rotate(90);
 			followpath.getPose().rotateRight();
@@ -63,8 +72,6 @@ public class Stopped implements Behavior {
 			pilot.rotate(180);
 			followpath.getPose().rotate180();
 		}
-		
-		suppressed = false;
 	}
 
 	@Override

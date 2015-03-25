@@ -45,7 +45,7 @@ public class RobotPose {
 		}
 	}
 	
-	public void rotateLeft() {
+	public void rotateRight() {
 		if(heading == POS_Y) {
 			heading = NEG_X;
 		} else if (heading == POS_X) {
@@ -59,7 +59,7 @@ public class RobotPose {
 		}
 	}
 	
-	public void rotateRight() {
+	public void rotateLeft() {
 		if(heading == POS_Y) {
 			heading = POS_X;
 		} else if (heading == POS_X) {

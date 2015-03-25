@@ -87,21 +87,21 @@ public class FollowPath {
 		IList<Node<Coordinate>> nodePath = new Nil<Node<Coordinate>>();
 		
 		while(!ready) {
-			System.out.println("Target: (" + targets.get(0).x() + "," + targets.get(0).y()	+ ")");
+			System.out.println("Target: " + targets.get(0));
 			nodePath = findPath.getPath(new Coordinate((int)pose.getX(), (int)pose.getY()), targets.get(0));
 			if (nodePath.isEmpty()) {
 				System.out.println("CANNOT REACH TARGET NODE: " + targets.get(0) + ", skipping...");
 				targets.remove(0);
-				//Need to decide what happens if all targets have been met/not found.
+				if(targets.isEmpty()) {
+					System.out.println("No more targets, bye!");
+					System.exit(0);
+				}
 			} else {
 				ready = true;
 			}
 		}
 		
-		//from the first point we must do the following time we need to do the following
-		
-		
-		Node<Coordinate> previousLocation = nodePath.head();   //Would be easier if this modified nodePath to just the tail
+		Node<Coordinate> previousLocation = nodePath.head();
 		nodePath = nodePath.tail();
 		ArrayList<Integer> movePath = new ArrayList<Integer>();
 		int actualHeading = pose.getHeading();
@@ -182,6 +182,7 @@ public class FollowPath {
 		Coordinate b = new Coordinate((int)pose.getX(), (int)pose.getY());
 		pose.moveBackward();
 		findPath.addObstacle(a, b);
+		System.out.println("New obstacle added between: " + a + " and " + b);
 	}
 	
 	/***
