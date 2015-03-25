@@ -1,6 +1,5 @@
 package followPath;
 
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
@@ -12,10 +11,7 @@ import robotSearches.*;
 import rp.robotics.mapping.IGridMap;
 import rp.robotics.mapping.MapUtils;
 import rp.robotics.mapping.RPLineMap;
-import lejos.nxt.SensorPort;
-import lejos.nxt.UltrasonicSensor;
 import lejos.nxt.comm.RConsole;
-import lejos.util.Delay;
 
 /**
  * Makes the robot go to a set of cooridnates.
@@ -31,18 +27,10 @@ public class FollowPath {
 	private ArrayList<Coordinate> targets;
 	
 	public static void main(String [] args) {
-		
 		RConsole.openBluetooth(0);
 		PrintStream ps = RConsole.getPrintStream();
 		System.setOut(ps);
-		System.setErr(ps);
-		
-//		UltrasonicSensor sensor = new UltrasonicSensor(SensorPort.S1);
-//		while(true) {
-//			System.out.println(sensor.getDistance());
-//			Delay.msDelay(1000);
-//		}
-		
+		System.setErr(ps);		
 		
 		new FollowPath();
 	}
@@ -69,8 +57,8 @@ public class FollowPath {
 		
 		targets = new ArrayList<Coordinate>();
 		targets.add(new Coordinate(10, 1));
-		targets.add(new Coordinate(6, 2));
-		targets.add(new Coordinate(10, 3));
+//		targets.add(new Coordinate(6, 2));
+//		targets.add(new Coordinate(10, 3));
 		targets.add(new Coordinate(6, 3));
 		targets.add(new Coordinate(0, 7));
 		
@@ -87,15 +75,15 @@ public class FollowPath {
 		IList<Node<Coordinate>> nodePath = new Nil<Node<Coordinate>>();
 		
 		while(!ready) {
+			if(targets.isEmpty()) {
+				System.out.println("No more targets, bye!");
+				System.exit(0);
+			}
 			System.out.println("Target: " + targets.get(0));
 			nodePath = findPath.getPath(new Coordinate((int)pose.getX(), (int)pose.getY()), targets.get(0));
 			if (nodePath.isEmpty()) {
 				System.out.println("CANNOT REACH TARGET NODE: " + targets.get(0) + ", skipping...");
 				targets.remove(0);
-				if(targets.isEmpty()) {
-					System.out.println("No more targets, bye!");
-					System.exit(0);
-				}
 			} else {
 				ready = true;
 			}

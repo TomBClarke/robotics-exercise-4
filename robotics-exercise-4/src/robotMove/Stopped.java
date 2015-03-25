@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import followPath.FollowPath;
 import lejos.nxt.Button;
-import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
 /**
@@ -17,7 +16,7 @@ public class Stopped implements Behavior {
 
 	private FollowPath followpath;
 	private ArrayList<Integer> pathToTake;
-	private final DifferentialPilot pilot;
+	private final RobotRotate rotate;
 	
 	/**
 	 * Creates the object.
@@ -25,10 +24,10 @@ public class Stopped implements Behavior {
 	 * @param followpath The class which holds the pose of the robot. 
 	 * @param pathToTake The moves the robot must perform.
 	 */
-	public Stopped(FollowPath followpath, ArrayList<Integer> pathToTake, DifferentialPilot pilot) {
+	public Stopped(FollowPath followpath, ArrayList<Integer> pathToTake, RobotRotate rotate) {
 		this.followpath = followpath;
 		this.pathToTake = pathToTake;
-		this.pilot = pilot;
+		this.rotate = rotate;
 	}
 	
 	@Override
@@ -38,17 +37,12 @@ public class Stopped implements Behavior {
 
 	@Override
 	public void action() {
-		ArrayList<Integer> tempPath = new ArrayList<Integer>();
+		ArrayList<Integer> tempPath;
 		if(followpath.isAtDestination()) {
 			System.out.println("Ready to go!");
 			Button.waitForAnyPress();
-			if(followpath.getTargets().isEmpty()) {
-				System.out.println("No more targets, bye!");
-				System.exit(0);
-			} else {
-				followpath.getTargets().remove(0);
-				tempPath = followpath.getPath();
-			}
+			followpath.getTargets().remove(0);
+			tempPath = followpath.getPath();
 		} else {
 			followpath.addObstacle();
 			tempPath = followpath.getPath();
@@ -58,20 +52,9 @@ public class Stopped implements Behavior {
 			pathToTake.add(tempPath.get(i));
 		}
 		
-		//System.out.println("pathToTake: " + pathToTake);
-		
 		Integer direction = pathToTake.get(0);
 		pathToTake.remove(0);
-		if(direction == 0) {
-			pilot.rotate(90);
-			followpath.getPose().rotateRight();
-		} else if(direction == 2) {
-			pilot.rotate(-90);
-			followpath.getPose().rotateLeft();
-		} else if(direction == 3) {
-			pilot.rotate(180);
-			followpath.getPose().rotate180();
-		}
+		rotate.rotate(direction);
 	}
 
 	@Override

@@ -24,6 +24,7 @@ public class JunctionBehavior implements Behavior {
 	private ArrayList<Integer> pathToTake;
 	private FollowPath followpath;
 	private UltrasonicSensor sensorS;
+	private RobotRotate rotate;
 	
 	/**
 	 * Allows the class access to the sensors and pilot.
@@ -33,13 +34,14 @@ public class JunctionBehavior implements Behavior {
 	 * @param sensorR The right light sensor.
 	 * @param followpath This holds information about the post of the robot.
 	 */
-	public JunctionBehavior(DifferentialPilot pilot, LightSensor sensorL, LightSensor sensorR, UltrasonicSensor sensorS, ArrayList<Integer> pathToTake, FollowPath followpath) {
+	public JunctionBehavior(DifferentialPilot pilot, LightSensor sensorL, LightSensor sensorR, UltrasonicSensor sensorS, ArrayList<Integer> pathToTake, FollowPath followpath, RobotRotate rotate) {
 		this.pilot= pilot;
 		this.sensorL = sensorL;
 		this.sensorR = sensorR;
 		this.sensorS = sensorS;
 		this.pathToTake = pathToTake;
 		this.followpath = followpath;
+		this.rotate = rotate;
 	}
 
 	@Override
@@ -55,13 +57,7 @@ public class JunctionBehavior implements Behavior {
 		pilot.travel(100);
 		Integer direction = pathToTake.get(0);
 		pathToTake.remove(0);
-		if(direction == 0) {
-			pilot.rotate(90);
-			followpath.getPose().rotateRight();
-		} else if(direction == 2) {
-			pilot.rotate(-90);
-			followpath.getPose().rotateLeft();
-		}
+		rotate.rotate(direction);
 		
 		if(pathToTake.isEmpty()) {
 			Sound.setVolume(Sound.VOL_MAX);
@@ -69,7 +65,7 @@ public class JunctionBehavior implements Behavior {
 			Delay.msDelay(1000);
 		} else {
 			int readings = 0;
-			int repeats = 5;
+			int repeats = 10;
 			
 			for(int i = 0; i < repeats; i++) {
 				readings += sensorS.getDistance();
@@ -77,7 +73,6 @@ public class JunctionBehavior implements Behavior {
 			
 			readings = readings / repeats;
 			
-			System.out.println("Distance to blockage: " + readings);
 			if(readings < 25) {
 				pathToTake.clear();
 			}
