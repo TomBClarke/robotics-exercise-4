@@ -1,5 +1,11 @@
 package followPath;
 
+/**
+ * Holds the pose of the robot.
+ * 
+ * @author Thomas Clarke, Rowan Cole and Kyle Allen-Taylor
+ *
+ */
 public class RobotPose {
 
 	public final static int POS_Y = 0;
@@ -11,12 +17,22 @@ public class RobotPose {
 	private int y;
 	private int heading;
 
+	/**
+	 * Holds the pose of the robot.
+	 * 
+	 * @param x The x coordinate.
+	 * @param y The y coordinate.
+	 * @param heading The current heading of the robot.
+	 */
 	public RobotPose(int x, int y, int heading) {
 		this.x = x;
 		this.y = y;
 		this.heading = heading;
 	}
 	
+	/**
+	 * Moves the robot forward by 1.
+	 */
 	public void moveForward() {
 		if(heading == POS_Y) {
 			y++;
@@ -31,6 +47,9 @@ public class RobotPose {
 		}
 	}
 	
+	/**
+	 * Moves the robot back by 1.
+	 */
 	public void moveBackward() {
 		if(heading == POS_Y) {
 			y--;
@@ -45,6 +64,9 @@ public class RobotPose {
 		}
 	}
 	
+	/**
+	 * Rotates the heading 90 to the left.
+	 */
 	public void rotateLeft() {
 		if(heading == POS_Y) {
 			heading = NEG_X;
@@ -59,6 +81,9 @@ public class RobotPose {
 		}
 	}
 	
+	/**
+	 * Rotates the heading 90 to the right.
+	 */
 	public void rotateRight() {
 		if(heading == POS_Y) {
 			heading = POS_X;
@@ -73,6 +98,9 @@ public class RobotPose {
 		}
 	}
 	
+	/**
+	 * Reverses the robots heading.
+	 */
 	public void rotate180() {
 		if(heading == POS_Y) {
 			heading = NEG_Y;
@@ -87,14 +115,29 @@ public class RobotPose {
 		}
 	}
 	
+	/**
+	 * Gets the x coordinate of the robot.
+	 * 
+	 * @return The x coordinate.
+	 */
 	public int getX() {
 		return x;
 	}
 	
+	/**
+	 * The y coordinate of the robot.
+	 * 
+	 * @return The y coordinate.
+	 */
 	public int getY() {
 		return y;
 	}
 	
+	/**
+	 * Gets the current heading of the robot. When used, the heading values at the top should be used, not literal numbers (e.g.: POS_Y instead of 0).
+	 * 
+	 * @return The heading.
+	 */
 	public int getHeading() {
 		return heading;
 	}
