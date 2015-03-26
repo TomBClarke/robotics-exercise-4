@@ -1,6 +1,7 @@
 package robotMove;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import followPath.FollowPath;
 import lejos.nxt.LightSensor;
@@ -29,10 +30,13 @@ public class JunctionBehavior implements Behavior {
 	/**
 	 * Allows the class access to the sensors and pilot.
 	 * 
-	 * @param pilot The pilot controlling the robot.
+	 * @param pilot This controls the robot.
 	 * @param sensorL The left light sensor.
 	 * @param sensorR The right light sensor.
+	 * @param sensorS The ultrasonic sensor.
+	 * @param pathToTake The list of turns to make.
 	 * @param followpath This holds information about the post of the robot.
+	 * @param rotate This makes the robot rotate and updates the pose.
 	 */
 	public JunctionBehavior(DifferentialPilot pilot, LightSensor sensorL, LightSensor sensorR, UltrasonicSensor sensorS, ArrayList<Integer> pathToTake, FollowPath followpath, RobotRotate rotate) {
 		this.pilot= pilot;
@@ -51,7 +55,6 @@ public class JunctionBehavior implements Behavior {
 
 	@Override
 	public void action() {
-		
 		followpath.getPose().moveForward();
 		
 		pilot.travel(100);
@@ -64,16 +67,24 @@ public class JunctionBehavior implements Behavior {
 			Sound.beepSequence();
 			Delay.msDelay(1000);
 		} else {
-			int readings = 0;
 			int repeats = 10;
+			int[] readings = new int[repeats];
 			
 			for(int i = 0; i < repeats; i++) {
-				readings += sensorS.getDistance();
+				readings[i] = sensorS.getDistance();
+			}
+
+			Arrays.sort(readings);
+			
+			int reading = 0;
+			
+			for(int i = 2; i < repeats - 2; i++) {
+				reading += readings[i];
 			}
 			
-			readings = readings / repeats;
+			reading = reading / (repeats - 4);
 			
-			if(readings < 25) {
+			if(reading < 25) {
 				pathToTake.clear();
 			}
 		}

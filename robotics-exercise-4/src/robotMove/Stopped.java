@@ -23,6 +23,7 @@ public class Stopped implements Behavior {
 	 * 
 	 * @param followpath The class which holds the pose of the robot. 
 	 * @param pathToTake The moves the robot must perform.
+	 * @param rotate This rotates the robot, and updates the pose.
 	 */
 	public Stopped(FollowPath followpath, ArrayList<Integer> pathToTake, RobotRotate rotate) {
 		this.followpath = followpath;

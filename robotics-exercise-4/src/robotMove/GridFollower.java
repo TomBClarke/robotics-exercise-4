@@ -20,7 +20,6 @@ public class GridFollower implements Behavior {
 	 * @param pilot The pilot controlling the robot.
 	 * @param sensorL The left light sensor.
 	 * @param sensorR The right light sensor.
-	 * @param moving Used to describe if the robot is moving.
 	 */
 	public GridFollower(DifferentialPilot pilot, LightSensor sensorL, LightSensor sensorR) {
 		this.lf = new LineFollower(pilot, sensorL, sensorR);
