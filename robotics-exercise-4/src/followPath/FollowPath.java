@@ -27,10 +27,10 @@ public class FollowPath {
 	private ArrayList<Coordinate> targets;
 	
 	public static void main(String [] args) {
-		RConsole.openBluetooth(0);
-		PrintStream ps = RConsole.getPrintStream();
-		System.setOut(ps);
-		System.setErr(ps);		
+//		RConsole.openBluetooth(0);
+//		PrintStream ps = RConsole.getPrintStream();
+//		System.setOut(ps);
+//		System.setErr(ps);		
 		
 		new FollowPath();
 	}
@@ -164,6 +164,9 @@ public class FollowPath {
 		return pose.getX() == targets.get(0).x() && pose.getY() == targets.get(0).y();
 	}
 	
+	/**
+	 * Adds an obstacle to the map.
+	 */
 	public void addObstacle(){
 		Coordinate a = new Coordinate((int)pose.getX(), (int)pose.getY());
 		pose.moveForward();
