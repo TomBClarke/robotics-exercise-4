@@ -68,8 +68,8 @@ public class FindPath {
 	 * @param coordinate Where the robot wants to get to.
 	 * @return The list of coordinates it shall visit,
 	 */
-	public IList<Node<Coordinate>> getPath(Coordinate origin, Coordinate coordinate) {
-		return graph.findPathFrom(graph.nodeWith(origin), graph.nodeWith(coordinate));
+	public IList<Node<Coordinate>> getPath(Coordinate origin, Coordinate coordinate, IQueueContainer<Coordinate> frontier) {
+		return graph.findPathFrom(graph.nodeWith(origin), graph.nodeWith(coordinate), frontier);
 	}
 
 	/**

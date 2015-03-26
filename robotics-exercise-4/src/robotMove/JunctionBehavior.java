@@ -76,6 +76,13 @@ public class JunctionBehavior implements Behavior {
 
 			Arrays.sort(readings);
 			
+			String list = "";
+			for(int i = 0; i < readings.length; i++) {
+				list += "," + readings[i];
+			}
+			
+			System.out.println("Readings: " + list);
+			
 			int reading = 0;
 			
 			for(int i = 2; i < repeats - 2; i++) {
@@ -84,7 +91,10 @@ public class JunctionBehavior implements Behavior {
 			
 			reading = reading / (repeats - 4);
 			
-			if(reading < 25) {
+			if(reading < 20) {
+				Sound.setVolume(Sound.VOL_MAX);
+				Sound.buzz();
+				Delay.msDelay(1000);
 				pathToTake.clear();
 			}
 		}

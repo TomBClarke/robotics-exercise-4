@@ -30,7 +30,7 @@ public class FollowPath {
 //		RConsole.openBluetooth(0);
 //		PrintStream ps = RConsole.getPrintStream();
 //		System.setOut(ps);
-//		System.setErr(ps);		
+//		System.setErr(ps);	
 		
 		new FollowPath();
 	}
@@ -57,8 +57,8 @@ public class FollowPath {
 		
 		targets = new ArrayList<Coordinate>();
 		targets.add(new Coordinate(10, 1));
-//		targets.add(new Coordinate(6, 2));
-//		targets.add(new Coordinate(10, 3));
+		targets.add(new Coordinate(6, 2));
+		targets.add(new Coordinate(10, 3));
 		targets.add(new Coordinate(6, 3));
 		targets.add(new Coordinate(0, 7));
 		
@@ -80,7 +80,8 @@ public class FollowPath {
 				System.exit(0);
 			}
 			System.out.println("Target: " + targets.get(0));
-			nodePath = findPath.getPath(new Coordinate((int)pose.getX(), (int)pose.getY()), targets.get(0));
+			IQueueContainer<Coordinate> frontier = new QueueContainer<Coordinate>();
+			nodePath = findPath.getPath(new Coordinate((int)pose.getX(), (int)pose.getY()), targets.get(0), frontier);
 			if (nodePath.isEmpty()) {
 				System.out.println("CANNOT REACH TARGET NODE: " + targets.get(0) + ", skipping...");
 				targets.remove(0);
