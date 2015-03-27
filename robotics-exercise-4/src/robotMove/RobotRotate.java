@@ -104,13 +104,6 @@ public class RobotRotate {
 
 			Arrays.sort(readings);
 			
-//			String list = "";
-//			for(int i = 0; i < readings.length; i++) {
-//				list += "," + readings[i];
-//			}
-//			
-//			System.out.println("Readings: " + list);
-			
 			int reading = 0;
 			
 			for(int i = 2; i < repeats - 2; i++) {

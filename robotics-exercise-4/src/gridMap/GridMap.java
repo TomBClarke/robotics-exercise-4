@@ -94,10 +94,22 @@ public class GridMap implements IGridMap {
 		return lineMap.range(new Pose(convertX(_x), convertY(_y), _heading));
 	}
 	
+	/**
+	 * Converts an int x to a realistic coordinate x.
+	 * 
+	 * @param x The int
+	 * @return The scaled version.
+	 */
 	private float convertX(float x) {
 		return xStart + x * cellSize;
 	}
 
+	/**
+	 * Converts an int x to a realistic coordinate y.
+	 * 
+	 * @param y The int
+	 * @return The scaled version.
+	 */
 	private float convertY(float y) {
 		return yStart + y * cellSize;
 	}

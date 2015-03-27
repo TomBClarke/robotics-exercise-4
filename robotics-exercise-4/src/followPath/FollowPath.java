@@ -28,7 +28,8 @@ public class FollowPath {
 	private ArrayList<Coordinate> targets;
 	
 	public static void main(String [] args) {
-		System.out.println("Press left for bluetooth console, press right to continue without.");
+		System.out.println("Use bluetooth console?");
+		System.out.println("< Yes || No >");
 		boolean skip = false;
 		while(!skip) {
 			int pressedButton = Button.waitForAnyPress(0);
