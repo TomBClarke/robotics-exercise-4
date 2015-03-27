@@ -21,6 +21,8 @@ public class FindPath {
 	 * @param gridMap
 	 */
 	public FindPath(IGridMap gridMap) {
+		System.out.println("Generating map...");
+		
 		graph = new Graph<Coordinate>();
 		
 		for (int i = 0; i < gridMap.getXSize(); i++) {

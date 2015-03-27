@@ -11,6 +11,7 @@ import robotSearches.*;
 import rp.robotics.mapping.IGridMap;
 import rp.robotics.mapping.MapUtils;
 import rp.robotics.mapping.RPLineMap;
+import lejos.nxt.Button;
 import lejos.nxt.comm.RConsole;
 
 /**
@@ -27,12 +28,19 @@ public class FollowPath {
 	private ArrayList<Coordinate> targets;
 	
 	public static void main(String [] args) {
-		boolean console = true;
-		if(console) {
-			RConsole.openBluetooth(0);
-			PrintStream ps = RConsole.getPrintStream();
-			System.setOut(ps);
-			System.setErr(ps);
+		System.out.println("Press left for bluetooth console, press right to continue without.");
+		boolean skip = false;
+		while(!skip) {
+			int pressedButton = Button.waitForAnyPress(0);
+			if(pressedButton == 2) {
+				RConsole.openBluetooth(0);
+				PrintStream ps = RConsole.getPrintStream();
+				System.setOut(ps);
+				System.setErr(ps);
+				skip = true;
+			} else if (pressedButton == 4) {
+				skip = true;
+			}
 		}
 		
 		new FollowPath();
