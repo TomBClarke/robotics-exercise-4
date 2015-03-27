@@ -55,7 +55,7 @@ public class Stopped implements Behavior {
 		
 		Integer direction = pathToTake.get(0);
 		pathToTake.remove(0);
-		rotate.rotate(direction);
+		pathToTake = rotate.rotate(direction);
 	}
 
 	@Override

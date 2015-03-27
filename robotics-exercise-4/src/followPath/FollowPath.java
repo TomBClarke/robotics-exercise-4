@@ -27,10 +27,13 @@ public class FollowPath {
 	private ArrayList<Coordinate> targets;
 	
 	public static void main(String [] args) {
-//		RConsole.openBluetooth(0);
-//		PrintStream ps = RConsole.getPrintStream();
-//		System.setOut(ps);
-//		System.setErr(ps);	
+		boolean console = true;
+		if(console) {
+			RConsole.openBluetooth(0);
+			PrintStream ps = RConsole.getPrintStream();
+			System.setOut(ps);
+			System.setErr(ps);
+		}
 		
 		new FollowPath();
 	}
